@@ -1,0 +1,27 @@
+name: Radio-Player stündlich prüfen
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: radio-player-check
+  cancel-in-progress: false
+jobs:
+  player-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Testbrowser installieren
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Sieben Player starten und Ergebnis an Make übermitteln
+        env:
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+        run: npm run check

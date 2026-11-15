@@ -1,0 +1,7 @@
+{
+  "name": "mueggelseewelle-player-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "check": "node monitor.cjs" },
+  "dependencies": { "playwright": "1.62.1" }
+}
